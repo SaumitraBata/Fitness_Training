@@ -320,35 +320,146 @@ class FitnessWebsite {
     }, 4000);
   }
 
-  // Blog Search
+  // Blog Search and Filtering
   setupBlogSearch() {
     const searchInput = document.getElementById('blogSearch');
     const blogCards = document.querySelectorAll('.blog-card');
     const noResults = document.getElementById('noResults');
+    const filterBtns = document.querySelectorAll('.filter-btn');
 
-    if (!searchInput || !blogCards.length) return;
+    if (!blogCards.length) return;
 
-    searchInput.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase().trim();
-      let visibleCards = 0;
+    let currentFilter = 'all';
 
-      blogCards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const description = card.querySelector('p').textContent.toLowerCase();
-        
-        if (title.includes(searchTerm) || description.includes(searchTerm)) {
-          card.style.display = 'block';
-          visibleCards++;
-        } else {
-          card.style.display = 'none';
-        }
+    // Search functionality
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase().trim();
+        this.filterCards(blogCards, noResults, currentFilter, searchTerm);
       });
+    }
 
-      // Show/hide no results message
-      if (noResults) {
-        noResults.style.display = visibleCards === 0 && searchTerm ? 'block' : 'none';
+    // Filter functionality
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-category');
+        const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        this.filterCards(blogCards, noResults, currentFilter, searchTerm);
+      });
+    });
+
+    // Expandable cards
+    this.setupExpandableCards();
+  }
+
+  filterCards(blogCards, noResults, filter, searchTerm) {
+    let visibleCards = 0;
+
+    blogCards.forEach(card => {
+      const title = card.querySelector('h3').textContent.toLowerCase();
+      const description = card.querySelector('p').textContent.toLowerCase();
+      const category = card.getAttribute('data-category') || 'lifestyle';
+      
+      const matchesSearch = !searchTerm || title.includes(searchTerm) || description.includes(searchTerm);
+      const matchesFilter = filter === 'all' || category === filter;
+      
+      if (matchesSearch && matchesFilter) {
+        card.style.display = 'block';
+        visibleCards++;
+      } else {
+        card.style.display = 'none';
       }
     });
+
+    if (noResults) {
+      noResults.style.display = visibleCards === 0 ? 'block' : 'none';
+    }
+  }
+
+  setupExpandableCards() {
+    const blogCards = document.querySelectorAll('.blog-card');
+    
+    blogCards.forEach(card => {
+      const readMoreBtn = card.querySelector('.blog-btn');
+      const description = card.querySelector('p');
+      
+      // Make entire card clickable on index page
+      if (!window.location.pathname.includes('blog.html')) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+          window.location.href = 'blog.html';
+        });
+        return;
+      }
+      
+      if (!readMoreBtn || !description) return;
+
+      const fullText = description.textContent;
+      const shortText = fullText.substring(0, 100) + '...';
+      
+      // Create hidden full text element
+      const fullTextEl = document.createElement('span');
+      fullTextEl.textContent = fullText;
+      fullTextEl.style.display = 'none';
+      description.appendChild(fullTextEl);
+      
+      // Set initial short text
+      description.childNodes[0].textContent = shortText;
+      
+      readMoreBtn.addEventListener('click', (e) => {
+        // Allow navigation on index page
+        if (!window.location.pathname.includes('blog.html')) {
+          return;
+        }
+        
+        e.preventDefault();
+        
+        if (card.classList.contains('expanded')) {
+          // Collapse
+          card.classList.remove('expanded');
+          description.childNodes[0].textContent = shortText;
+          readMoreBtn.textContent = 'Read More';
+        } else {
+          // Close other expanded cards
+          blogCards.forEach(otherCard => {
+            if (otherCard !== card && otherCard.classList.contains('expanded')) {
+              const otherDesc = otherCard.querySelector('p');
+              const otherBtn = otherCard.querySelector('.blog-btn');
+              otherCard.classList.remove('expanded');
+              otherDesc.childNodes[0].textContent = otherDesc.querySelector('span').textContent.substring(0, 100) + '...';
+              otherBtn.textContent = 'Read More';
+            }
+          });
+          
+          // Expand current card
+          card.classList.add('expanded');
+          description.childNodes[0].textContent = fullText;
+          readMoreBtn.textContent = 'Read Less';
+        }
+      });
+    });
+
+    // Close expanded cards when clicking outside (only on blog page)
+    if (window.location.pathname.includes('blog.html')) {
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.blog-card')) {
+          blogCards.forEach(card => {
+            if (card.classList.contains('expanded')) {
+              const description = card.querySelector('p');
+              const readMoreBtn = card.querySelector('.blog-btn');
+              const fullText = description.textContent;
+              const shortText = fullText.substring(0, 100) + '...';
+              
+              description.textContent = shortText;
+              readMoreBtn.textContent = 'Read More';
+              card.classList.remove('expanded');
+            }
+          });
+        }
+      });
+    }
   }
 
   // WhatsApp Float Behavior

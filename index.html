@@ -2,15 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Ashish Waghmare Fitness – Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/responsive-enhanced.css">
+    <link rel="stylesheet" href="css/splash.css">
 </head>
 <body>
+    <!-- Premium Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-glow"></div>
+        <div class="splash-content">
+            <h1 class="splash-logo">Ashish Waghmare</h1>
+            <p class="splash-tagline">Fitness Coach</p>
+        </div>
+    </div>
+
     <header class="navbar" id="navbar">
         <nav class="nav-container">
             <div class="logo">
@@ -292,19 +306,49 @@
                 <p class="section-subtitle">A simple 3-step process to reach your fitness goals.</p>
                 <div class="how-cards-grid">
                     <div class="how-card">
-                        <img src="assets/icons/assess.png" alt="Assess" class="how-icon">
+                        <div class="how-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="30" stroke="#D4AF37" stroke-width="3" fill="none">
+                                    <animate attributeName="stroke-dasharray" values="0 188;94 94;188 0" dur="3s" repeatCount="indefinite"/>
+                                </circle>
+                                <path d="M38 50 L46 58 L62 42" stroke="#D4AF37" stroke-width="3" fill="none" stroke-linecap="round">
+                                    <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
                         <h3>Assess</h3>
                         <p>We start with understanding your goals, lifestyle, and fitness level.</p>
                     </div>
 
                     <div class="how-card">
-                        <img src="assets/icons/plan.png" alt="Plan" class="how-icon">
+                        <div class="how-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <rect x="30" y="25" width="40" height="50" rx="5" stroke="#D4AF37" stroke-width="3" fill="none">
+                                    <animate attributeName="stroke-dasharray" values="0 180;90 90;180 0" dur="3s" repeatCount="indefinite"/>
+                                </rect>
+                                <path d="M40 40 L60 40 M40 50 L55 50 M40 60 L60 60" stroke="#D4AF37" stroke-width="2">
+                                    <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
                         <h3>Plan</h3>
                         <p>A personalized training and diet plan is created for you.</p>
                     </div>
 
                     <div class="how-card">
-                        <img src="assets/icons/progress.png" alt="Progress" class="how-icon">
+                        <div class="how-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <path d="M25 70 L40 55 L55 60 L70 40 L85 30" stroke="#D4AF37" stroke-width="3" fill="none" stroke-linecap="round">
+                                    <animate attributeName="stroke-dasharray" values="0 80;40 40;80 0" dur="3s" repeatCount="indefinite"/>
+                                </path>
+                                <circle cx="85" cy="30" r="4" fill="#D4AF37">
+                                    <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <path d="M80 25 L85 30 L80 35" stroke="#D4AF37" stroke-width="2" fill="none">
+                                    <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
                         <h3>Progress</h3>
                         <p>Track your improvements weekly and adjust accordingly.</p>
                     </div>
@@ -322,8 +366,14 @@
                 </div>
 
                 <div class="blog-grid">
-                    <article class="blog-card">
-                        <img src="assets/images/blog1.jpg" alt="Blog" class="blog-image">
+                    <article class="blog-card" data-category="lifestyle">
+                        <div class="blog-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="30" r="15" fill="#D4AF37"/>
+                                <path d="M20 50 L80 50 M30 60 L70 60 M25 70 L75 70" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M35 80 Q50 85 65 80" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
                         <div class="blog-content">
                             <h3>5 Morning Habits for Weight Loss</h3>
                             <p>Discover simple morning routines that can boost your metabolism and help you lose weight faster.</p>
@@ -331,8 +381,15 @@
                         </div>
                     </article>
 
-                    <article class="blog-card">
-                        <img src="assets/images/blog2.jpg" alt="Blog" class="blog-image">
+                    <article class="blog-card" data-category="lifestyle">
+                        <div class="blog-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <rect x="20" y="30" width="60" height="40" rx="5" stroke="#D4AF37" stroke-width="3" fill="none"/>
+                                <circle cx="35" cy="45" r="8" fill="#D4AF37"/>
+                                <path d="M50 40 L75 40 M50 50 L70 50" stroke="#D4AF37" stroke-width="2"/>
+                                <path d="M30 80 L70 80" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        </div>
                         <div class="blog-content">
                             <h3>Student Fitness on a Budget</h3>
                             <p>Complete guide to staying fit as a student without breaking the bank or your schedule.</p>
@@ -340,8 +397,15 @@
                         </div>
                     </article>
 
-                    <article class="blog-card">
-                        <img src="assets/images/blog3.jpg" alt="Blog" class="blog-image">
+                    <article class="blog-card" data-category="training">
+                        <div class="blog-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <rect x="15" y="45" width="70" height="10" rx="5" fill="#D4AF37"/>
+                                <circle cx="25" cy="50" r="12" stroke="#D4AF37" stroke-width="3" fill="none"/>
+                                <circle cx="75" cy="50" r="12" stroke="#D4AF37" stroke-width="3" fill="none"/>
+                                <path d="M40 30 L60 30 M40 70 L60 70" stroke="#D4AF37" stroke-width="2"/>
+                            </svg>
+                        </div>
                         <div class="blog-content">
                             <h3>Home Workout Equipment Essentials</h3>
                             <p>Build an effective home gym with these must-have equipment pieces for maximum results.</p>
@@ -349,8 +413,16 @@
                         </div>
                     </article>
 
-                    <article class="blog-card">
-                        <img src="assets/images/blog4.jpg" alt="Blog" class="blog-image">
+                    <article class="blog-card" data-category="nutrition">
+                        <div class="blog-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <rect x="20" y="35" width="25" height="30" rx="3" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                                <rect x="55" y="35" width="25" height="30" rx="3" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                                <circle cx="32" cy="45" r="4" fill="#D4AF37"/>
+                                <circle cx="67" cy="45" r="4" fill="#D4AF37"/>
+                                <path d="M25 55 L40 55 M60 55 L75 55" stroke="#D4AF37" stroke-width="2"/>
+                            </svg>
+                        </div>
                         <div class="blog-content">
                             <h3>Meal Prep for Busy Professionals</h3>
                             <p>Time-saving meal prep strategies that fit into your hectic work schedule perfectly.</p>
@@ -358,8 +430,15 @@
                         </div>
                     </article>
 
-                    <article class="blog-card">
-                        <img src="assets/images/blog5.jpg" alt="Blog" class="blog-image">
+                    <article class="blog-card" data-category="training">
+                        <div class="blog-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <path d="M20 70 L35 50 L50 60 L65 40 L80 30" stroke="#D4AF37" stroke-width="3" fill="none"/>
+                                <circle cx="35" cy="50" r="4" fill="#D4AF37"/>
+                                <circle cx="65" cy="40" r="4" fill="#D4AF37"/>
+                                <path d="M75 25 L80 30 L75 35" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
                         <div class="blog-content">
                             <h3>Breaking Through Fitness Plateaus</h3>
                             <p>Proven strategies to overcome stagnation and continue making progress in your fitness journey.</p>
@@ -367,8 +446,16 @@
                         </div>
                     </article>
 
-                    <article class="blog-card">
-                        <img src="assets/images/blog6.jpg" alt="Blog" class="blog-image">
+                    <article class="blog-card" data-category="lifestyle">
+                        <div class="blog-icon">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="45" r="20" stroke="#D4AF37" stroke-width="3" fill="none"/>
+                                <path d="M42 40 Q50 35 58 40" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                                <circle cx="45" cy="42" r="2" fill="#D4AF37"/>
+                                <circle cx="55" cy="42" r="2" fill="#D4AF37"/>
+                                <path d="M40 75 Q50 80 60 75" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
                         <div class="blog-content">
                             <h3>Mental Health and Physical Fitness</h3>
                             <p>Understanding the powerful connection between mental wellness and physical transformation.</p>

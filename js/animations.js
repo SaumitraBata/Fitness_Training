@@ -161,99 +161,7 @@ class AnimationController {
   }
 }
 
-// Lightweight Carousel for testimonials
-class TestimonialCarousel {
-  constructor(container) {
-    this.container = container;
-    this.slides = container.querySelectorAll('.testimonial-card');
-    this.currentSlide = 0;
-    this.isAutoPlaying = true;
-    this.autoPlayInterval = null;
-    
-    if (this.slides.length > 1) {
-      this.init();
-    }
-  }
 
-  init() {
-    this.createControls();
-    this.setupEventListeners();
-    this.startAutoPlay();
-  }
-
-  createControls() {
-    const controlsHTML = `
-      <div class="carousel-controls">
-        <button class="carousel-btn prev" aria-label="Previous testimonial">‹</button>
-        <div class="carousel-dots"></div>
-        <button class="carousel-btn next" aria-label="Next testimonial">›</button>
-      </div>
-    `;
-    
-    this.container.insertAdjacentHTML('afterend', controlsHTML);
-    
-    // Create dots
-    const dotsContainer = document.querySelector('.carousel-dots');
-    this.slides.forEach((_, index) => {
-      const dot = document.createElement('button');
-      dot.classList.add('carousel-dot');
-      dot.setAttribute('aria-label', `Go to testimonial ${index + 1}`);
-      if (index === 0) dot.classList.add('active');
-      dotsContainer.appendChild(dot);
-    });
-  }
-
-  setupEventListeners() {
-    const prevBtn = document.querySelector('.carousel-btn.prev');
-    const nextBtn = document.querySelector('.carousel-btn.next');
-    const dots = document.querySelectorAll('.carousel-dot');
-
-    prevBtn?.addEventListener('click', () => this.prevSlide());
-    nextBtn?.addEventListener('click', () => this.nextSlide());
-    
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => this.goToSlide(index));
-    });
-
-    // Pause on hover
-    this.container.addEventListener('mouseenter', () => this.pauseAutoPlay());
-    this.container.addEventListener('mouseleave', () => this.startAutoPlay());
-  }
-
-  goToSlide(index) {
-    this.slides[this.currentSlide].classList.remove('active');
-    document.querySelectorAll('.carousel-dot')[this.currentSlide].classList.remove('active');
-    
-    this.currentSlide = index;
-    
-    this.slides[this.currentSlide].classList.add('active');
-    document.querySelectorAll('.carousel-dot')[this.currentSlide].classList.add('active');
-  }
-
-  nextSlide() {
-    const nextIndex = (this.currentSlide + 1) % this.slides.length;
-    this.goToSlide(nextIndex);
-  }
-
-  prevSlide() {
-    const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-    this.goToSlide(prevIndex);
-  }
-
-  startAutoPlay() {
-    if (this.isAutoPlaying) {
-      this.autoPlayInterval = setInterval(() => {
-        this.nextSlide();
-      }, 5000);
-    }
-  }
-
-  pauseAutoPlay() {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
-    }
-  }
-}
 
 // Accessible Lightbox
 class Lightbox {
@@ -403,10 +311,186 @@ class RippleEffect {
   }
 }
 
+// Testimonials Enhanced Interactions
+class TestimonialsEnhancer {
+  constructor() {
+    this.container = document.querySelector('.testimonials-grid');
+    if (this.container) {
+      this.init();
+    }
+  }
+
+  init() {
+    this.setupScrollAnimations();
+    this.setupClickAnimations();
+    this.setupKeyboardNavigation();
+  }
+
+  setupScrollAnimations() {
+    const cards = this.container.querySelectorAll('.testimonial-card');
+    
+    // Animate cards on scroll into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.animation = `slideInFromRight 0.6s ease forwards`;
+            entry.target.style.opacity = '1';
+          }, index * 100);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    cards.forEach((card, index) => {
+      card.style.opacity = '0';
+      observer.observe(card);
+    });
+  }
+
+  setupClickAnimations() {
+    const cards = this.container.querySelectorAll('.testimonial-card');
+    
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Add glow animation on click
+        card.style.animation = 'testimonialGlow 1s ease';
+        
+        // Reset animation after completion
+        setTimeout(() => {
+          card.style.animation = '';
+        }, 1000);
+      });
+
+      // Enhanced hover effects
+      card.addEventListener('mouseenter', () => {
+        this.pauseOtherAnimations(card);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        this.resumeAllAnimations();
+      });
+    });
+  }
+
+  setupKeyboardNavigation() {
+    this.container.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        this.container.scrollBy({ left: -350, behavior: 'smooth' });
+      } else if (e.key === 'ArrowRight') {
+        this.container.scrollBy({ left: 350, behavior: 'smooth' });
+      }
+    });
+
+    // Make container focusable
+    this.container.setAttribute('tabindex', '0');
+  }
+
+  pauseOtherAnimations(activeCard) {
+    const cards = this.container.querySelectorAll('.testimonial-card');
+    cards.forEach(card => {
+      if (card !== activeCard) {
+        card.style.filter = 'brightness(0.7) blur(1px)';
+        card.style.transform = 'scale(0.95)';
+      }
+    });
+  }
+
+  resumeAllAnimations() {
+    const cards = this.container.querySelectorAll('.testimonial-card');
+    cards.forEach(card => {
+      card.style.filter = '';
+      card.style.transform = '';
+    });
+  }
+
+  setupTestimonialCarousel() {
+    const container = document.querySelector('.testimonials-grid');
+    const cards = document.querySelectorAll('.testimonial-card');
+    
+    if (!container || cards.length === 0) return;
+
+    // Create controls
+    const controlsHTML = `
+      <div class="carousel-controls">
+        <button class="carousel-btn prev">‹</button>
+        <div class="carousel-dots"></div>
+        <button class="carousel-btn next">›</button>
+      </div>
+    `;
+    
+    container.parentElement.insertAdjacentHTML('afterend', controlsHTML);
+    
+    // Create dots
+    const dotsContainer = document.querySelector('.carousel-dots');
+    cards.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.classList.add('carousel-dot');
+      if (index === 0) dot.classList.add('active');
+      dotsContainer.appendChild(dot);
+    });
+
+    let currentIndex = 0;
+    const scrollAmount = 370;
+
+    const updateCarousel = (index) => {
+      container.scrollTo({
+        left: index * scrollAmount,
+        behavior: 'smooth'
+      });
+      
+      document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+      
+      currentIndex = index;
+    };
+
+    document.querySelector('.carousel-btn.prev').addEventListener('click', () => {
+      const newIndex = currentIndex > 0 ? currentIndex - 1 : cards.length - 1;
+      updateCarousel(newIndex);
+    });
+
+    document.querySelector('.carousel-btn.next').addEventListener('click', () => {
+      const newIndex = currentIndex < cards.length - 1 ? currentIndex + 1 : 0;
+      updateCarousel(newIndex);
+    });
+
+    document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+      dot.addEventListener('click', () => updateCarousel(index));
+    });
+  }
+}
+
 // Initialize everything when DOM is loaded
+// Splash Screen Controller
+class SplashScreen {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    const splash = document.getElementById('splashScreen');
+    if (!splash) return;
+
+    setTimeout(() => {
+      splash.remove();
+      document.body.style.overflow = '';
+    }, 2800);
+
+    document.body.style.overflow = 'hidden';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize splash screen
+  new SplashScreen();
+  
   // Initialize animation controller
   new AnimationController();
+  
+  // Initialize testimonials enhancer
+  const testimonialsEnhancer = new TestimonialsEnhancer();
+  testimonialsEnhancer.setupTestimonialCarousel();
   
   // Initialize testimonial carousel on mobile
   if (window.innerWidth <= 768) {
